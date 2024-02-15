@@ -11,7 +11,17 @@
     },
     "autoload": {
         "psr-4": {
-            "Domain\\Blog\\": "domain/Blog/src"
+            "Domain\\Blog\\": "domain/Blog/src",
+            "App\\": "infra"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Domain\\Blog\\Tests\\": "domain/Blog/tests"
+        }
+    },
+    "require": {
+        "beberlei/assert": "^3.3",
+        "symfony/http-foundation": "^7.0"
     }
 }
