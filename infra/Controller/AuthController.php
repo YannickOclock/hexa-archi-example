@@ -8,10 +8,11 @@ use Domain\Auth\Exception\InvalidAuthPostDataException;
 use Domain\Auth\Exception\NotFoundEmailAuthException;
 use Domain\Auth\UseCase\AuthUser;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AuthController extends AbstractController
 {
-    public function handleRequest(Request $request, AuthUser $useCase, AltoRouter $router)
+    public function handleRequest(Request $request, AuthUser $useCase)
     {
         if($request->isMethod('GET')) {
             return $this->render('auth.form.html.twig');
@@ -29,6 +30,6 @@ class AuthController extends AbstractController
             ]);
         }
 
-        return $this->redirectToRoute('home');
+        $this->redirectToRoute('main-home');
     }
 }

@@ -1,12 +1,14 @@
 <?php
 namespace App\Controller;
 
+use AltoRouter;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
 abstract class AbstractController {
     public function __construct(
-        protected Environment $twig
+        protected Environment $twig,
+        protected AltoRouter $router
     ){}
     public function render(string $template, array $data = [])
     {
@@ -14,6 +16,6 @@ abstract class AbstractController {
     }
     public function redirectToRoute(string $route, array $params = [])
     {
-        return new Response("Redirect to $route");
+        header('Location: ' . $this->router->generate($route, $params));
     }
 }
