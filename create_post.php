@@ -11,7 +11,6 @@ $request = Request::createFromGlobals();
 
 $pdoPostRepository = new PdoPostRepository();
 $useCase = new CreatePost($pdoPostRepository);
-$controller = new CreatePostController($useCase);
-
-$response = $controller->handleRequest($request);
-$response->send();
+// $controller = new CreatePostController($useCase);
+// $response = $controller->handleRequest($request);
+// $response->send();

@@ -5,11 +5,13 @@ namespace App\Controller;
 use Domain\Blog\UseCase\CreatePost;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
 class CreatePostController
 {
     public function __construct(
-        protected CreatePost $useCase
+        protected CreatePost $useCase,
+        protected Environment $twig
     ){}
 
     public function handleRequest(Request $request)
@@ -17,6 +19,7 @@ class CreatePostController
         if($request->isMethod('GET')) {
             return $this->renderForm();
         }
+
         // traiter le formulaire en utilisant le use case
         $post = $this->useCase->execute([
             'title' => $request->request->get('title', ''), 
@@ -28,8 +31,6 @@ class CreatePostController
 
     public function renderForm()
     {
-        ob_start();
-        include __DIR__ . '/../Views/form.tpl.php';
-        return new Response(ob_get_clean());
+        return new Response($this->twig->render('form.html.twig', []));
     }
 }
