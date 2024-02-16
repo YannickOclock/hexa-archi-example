@@ -8,7 +8,7 @@ abstract class AbstractController {
     public function __construct(
         protected Environment $twig
     ){}
-    public function renderForm(string $template, array $data = [])
+    public function render(string $template, array $data = [])
     {
         return new Response($this->twig->render($template, $data));
     }

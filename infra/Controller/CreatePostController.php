@@ -11,7 +11,7 @@ class CreatePostController extends AbstractController
     public function handleRequest(CreatePost $useCase, Request $request)
     {
         if($request->isMethod('GET')) {
-            return $this->renderForm('form.html.twig');
+            return $this->render('form.html.twig');
         }
 
         // traiter le formulaire en utilisant le use case

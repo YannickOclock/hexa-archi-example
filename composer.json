@@ -2,7 +2,8 @@
     "require-dev": {
         "pestphp/pest": "^2.33",
         "symfony/var-dumper": "^7.0",
-        "pestphp/pest-plugin-watch": "^2.1"
+        "pestphp/pest-plugin-watch": "^2.1",
+        "mockery/mockery": "^1.6"
     },
     "config": {
         "allow-plugins": {
@@ -12,12 +13,14 @@
     "autoload": {
         "psr-4": {
             "Domain\\Blog\\": "domain/Blog/src",
+            "Domain\\Auth\\": "domain/Auth/src",
             "App\\": "infra"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Domain\\Blog\\Tests\\": "domain/Blog/tests"
+            "Domain\\Blog\\Tests\\": "domain/Blog/tests",
+            "Domain\\Auth\\Tests\\": "domain/Auth/tests"
         }
     },
     "require": {
