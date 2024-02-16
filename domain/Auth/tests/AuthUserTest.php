@@ -43,13 +43,8 @@ it("should throw an InvalidAuthPostDataException if the data auth form are not v
     $useCase = new AuthUser($userRepository);
     $isAuthenticate = $useCase->execute($userData);
 })->with([
-    [['email' => 'john@doe.fr', 'password' => 'pass']]
-])->expectException(InvalidAuthPostDataException::class);
-
-it("should throw an InvalidAuthPostDataException if the data auth form are not valid (emailNotAnEmail)", function ($userData) {
-    $userRepository = mockUserRepository('john', 'password');
-    $useCase = new AuthUser($userRepository);
-    $isAuthenticate = $useCase->execute($userData);
-})->with([
-    [['email' => 'john', 'password' => 'password']]
+    [['email' => 'john@doe.fr', 'password' => 'pass']],
+    [['email' => 'john', 'password' => 'password']],
+    [['email' => '', 'password' => '']],
+    [[]]
 ])->expectException(InvalidAuthPostDataException::class);

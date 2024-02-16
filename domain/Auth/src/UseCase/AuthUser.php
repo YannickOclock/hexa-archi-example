@@ -16,13 +16,17 @@ class AuthUser
 
     public function execute(array $data): bool
     {
-        $userFrom = $this->userRepository->findByEmail($data['email']);
-        if ($userFrom === null) {
-            return true;
-        }
         try {
-            $userData = new User($data['email'], $data['password']);
+            // valider les données du formulaire en premier
+            $userData = new User($data['email'] ?? '', $data['password'] ?? '');
             $this->validate($userData);
+
+            // si les données du formulaire sont OK, je chercher l'utilisateur en base
+            $userFrom = $this->userRepository->findByEmail($data['email']);
+            if ($userFrom === null) {
+                return true;
+            }
+
             return $userFrom->getPassword() === $userData->getPassword();
         } catch (LazyAssertionException $e) {
             throw InvalidAuthPostDataException::withMessage($e->getMessage());
