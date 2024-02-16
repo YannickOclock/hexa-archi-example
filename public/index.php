@@ -1,6 +1,7 @@
 <?php
 
 use App\Controller\CreatePostController;
+use App\Controller\ErrorController;
 use App\Utils\Dispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,13 +15,12 @@ if (array_key_exists('BASE_URI', $_SERVER)) {
     $_SERVER['BASE_URI'] = '/';
 }
 
-$router->map(
-    'GET|POST', '/', 
-    ['method' => 'handleRequest','controller' => CreatePostController::class], 'main-home'
-);
+// Liste des routes
+$router->map('GET|POST', '/', [CreatePostController::class, 'handleRequest'], 'main-home');
 
+// Dispatch
 $match = $router->match();
-$dispatcher = new Dispatcher($match, '\App\Controllers\ErrorController::err404');
+$dispatcher = new Dispatcher($match, [ErrorController::class, 'error404']);
 $route = $dispatcher->dispatch();
 
 $controller = $route[1];

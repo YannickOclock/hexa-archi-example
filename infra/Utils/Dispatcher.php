@@ -61,9 +61,9 @@ class Dispatcher
         // Getting controller's name and method's name
         // if it's an array
         if (is_array($target)) {
-            if (!empty($target['controller']) && !empty($target['method'])) {
-                $this->controller = $target['controller'];
-                $this->method = $target['method'];
+            if (!empty($target[0]) && !empty($target[1])) {
+                $this->controller = $target[0];
+                $this->method = $target[1];
             } else {
                 throw new \Exception('Target (array) of current route is incorrect');
             }

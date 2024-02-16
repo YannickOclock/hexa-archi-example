@@ -1,0 +1,9 @@
+{% extends "base.html.twig" %}
+
+{% block title %}{{ parent() }} - Erreur 404{% endblock %}
+
+{% block content %}
+    <alert class="alert alert-danger">
+        <strong>Attention !</strong> Cette page n'est pas accessible !
+    </alert>
+{% endblock %}
