@@ -1,4 +1,23 @@
+# on active la réécriture d'URL
+# pour l'utiliser et faire une redirection
 RewriteEngine On
-RewriteCond %{REQUEST_FILENAME} !-f
+
+# dynamically setup base URI
+# ici on met dans la variable $1 toutes les informations après .../public/
+# ex : ..../public/home => $1 = home
+RewriteCond %{REQUEST_URI}::$1 ^(/.+)/(.*)::\2$
+RewriteRule ^(.*) - [E=BASE_URI:%1]
+
+# redirect every request to index.php
+# and give the relative URL in "page" GET param
+
+# Si le dossier n'existe pas : -d
 RewriteCond %{REQUEST_FILENAME} !-d
-RewriteRule ^(.*)$ index.php [L,QSA]
+# Si le fichier n'existe pas : -f
+RewriteCond %{REQUEST_FILENAME} !-f
+
+# alors on réécrire/rediriger vers index.php
+# lors de la réécriture, on utilise le $1 pour fournir les informations apres le .../public/
+# ex : ..../public/home => $1 = home
+# on réécrit :     index.php?page=/home
+RewriteRule ^(.*)$ index.php?page=/$1 [QSA,L]

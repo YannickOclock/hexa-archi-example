@@ -1,33 +1,32 @@
 <?php
 
 use App\Controller\CreatePostController;
-use FastRoute\RouteCollector;
+use App\Utils\Dispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
 $container = require __DIR__ . '/../app/bootstrap.php';
 
-$dispatcher = FastRoute\simpleDispatcher(function (RouteCollector $r) {
-    $r->addRoute(['GET', 'POST'], '/', [CreatePostController::class, 'handleRequest']);
-});
+$router = new AltoRouter();
 
-$route = $dispatcher->dispatch($_SERVER['REQUEST_METHOD'], $_SERVER['REQUEST_URI']);
-
-switch ($route[0]) {
-    case FastRoute\Dispatcher::NOT_FOUND:
-        echo '404 Not Found';
-        break;
-
-    case FastRoute\Dispatcher::METHOD_NOT_ALLOWED:
-        echo '405 Method Not Allowed';
-        break;
-
-    case FastRoute\Dispatcher::FOUND:
-        $controller = $route[1];
-        $parameters = $route[2];
-
-        $parameters['request'] = Request::createFromGlobals();
-
-        $response = $container->call($controller, $parameters);
-        $response->send();
-        break;
+if (array_key_exists('BASE_URI', $_SERVER)) {
+    $router->setBasePath($_SERVER['BASE_URI']);
+} else { 
+    $_SERVER['BASE_URI'] = '/';
 }
+
+$router->map(
+    'GET|POST', '/', 
+    ['method' => 'handleRequest','controller' => CreatePostController::class], 'main-home'
+);
+
+$match = $router->match();
+$dispatcher = new Dispatcher($match, '\App\Controllers\ErrorController::err404');
+$route = $dispatcher->dispatch();
+
+$controller = $route[1];
+$parameters = $route[2];
+
+$parameters['request'] = Request::createFromGlobals();
+
+$response = $container->call($controller, $parameters);
+$response->send();
