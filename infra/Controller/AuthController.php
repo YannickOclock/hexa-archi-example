@@ -29,13 +29,6 @@ class AuthController extends AbstractController
             ]);
         }
 
-        if($isAuthenticated) {
-            return $this->redirectToRoute('home');
-        } else {
-            dump('Email ou mot de passe incorrect');
-            return $this->render('auth.form.html.twig', [
-                'error' => 'Email ou mot de passe incorrect'
-            ]);
-        }
+        return $this->redirectToRoute('home');
     }
 }

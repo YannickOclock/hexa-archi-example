@@ -43,11 +43,11 @@ class AuthUser
         lazy()
             ->tryAll()
             ->that($user->getEmail(), 'email')
-                ->notBlank()
-                ->email()
+                ->notBlank("L'email ne doit pas être vide")
+                ->email("L'email n'est pas valide")
             ->that($user->getPassword(), 'password')
-                ->notBlank()
-                ->minLength(8)
+                ->notBlank("Le mot de passe ne doit pas être vide")
+                ->minLength(8, "Le mot de passe doit faire au moins 8 caractères")
             ->verifyNow()    
         ;
     }
