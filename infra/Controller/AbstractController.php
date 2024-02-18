@@ -12,6 +12,7 @@ abstract class AbstractController {
     ){}
     public function render(string $template, array $data = [])
     {
+        $data['router'] = $this->router;
         return new Response($this->twig->render($template, $data));
     }
     public function redirectToRoute(string $route, array $params = [])

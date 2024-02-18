@@ -20,7 +20,7 @@ class AuthController extends AbstractController
 
         // traiter le formulaire en utilisant le use case
         try {
-            $isAuthenticated = $useCase->execute([
+            $useCase->execute([
                 'email' => $request->request->get('email', ''), 
                 'password' => $request->request->get('password', '')
             ]);

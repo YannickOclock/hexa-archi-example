@@ -2,8 +2,6 @@
 
 use function DI\create;
 
-use App\Controller\AuthController;
-use App\Controller\CreatePostController;
 use Domain\Auth\Port\UserRepositoryInterface;
 use Domain\Auth\Tests\Adapters\PdoUserRepository;
 use Domain\Blog\Port\PostRepositoryInterface;
@@ -23,10 +21,6 @@ return [
         } else { 
             $_SERVER['BASE_URI'] = '/';
         }
-        // Liste des routes
-        $router->map('GET|POST', '/login', [AuthController::class, 'handleRequest'], 'main-login');
-        $router->map('GET|POST', '/', [CreatePostController::class, 'handleRequest'], 'main-home');
-
         return $router;
     },
 

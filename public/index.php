@@ -10,6 +10,11 @@ $container = require __DIR__ . '/../app/bootstrap.php';
 
 // Dispatch
 $router = $container->get(AltoRouter::class);
+
+// Liste des routes
+$router->map('GET|POST', '/login', [AuthController::class, 'handleRequest'], 'main-login');
+$router->map('GET|POST', '/', [CreatePostController::class, 'handleRequest'], 'main-home');
+
 $match = $router->match();
 $dispatcher = new Dispatcher($match, [ErrorController::class, 'error404']);
 $route = $dispatcher->dispatch();
