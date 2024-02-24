@@ -3,17 +3,21 @@
 namespace Domain\Auth\UseCase;
 
 use Assert\LazyAssertionException;
+use Domain\Auth\Entity\SessionUser;
 use Domain\Auth\Entity\User;
 use Domain\Auth\Exception\BadCredentialsAuthException;
 use Domain\Auth\Port\UserRepositoryInterface;
 use Domain\Auth\Exception\InvalidAuthPostDataException;
 use Domain\Auth\Exception\NotFoundEmailAuthException;
+use Domain\Auth\Port\SessionRepositoryInterface;
 
 use function Assert\lazy;
 
 class AuthUser
 {
-    public function __construct(private UserRepositoryInterface $userRepository) {
+    public function __construct(
+        private UserRepositoryInterface $userRepository,
+        private SessionRepositoryInterface $sessionRepository) {
     }
 
     public function execute(array $data): bool
@@ -32,7 +36,13 @@ class AuthUser
             if($userFrom->getPassword() !== $userData->getPassword()) {
                 throw BadCredentialsAuthException::withMessage('Email ou mot de passe incorrect');
             }
+
+            // si le mot de passe est OK, je peux sauvegarder l'utilisateur en session
+            $sessionUser = new SessionUser($userData->getEmail(), $userFrom->getRoles());
+            $this->sessionRepository->saveUser($sessionUser);
+
             return true;
+
         } catch (LazyAssertionException $e) {
             throw InvalidAuthPostDataException::withErrors($e->getErrorExceptions());
         }

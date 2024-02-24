@@ -3,6 +3,9 @@
 namespace Domain\Blog\UseCase;
 
 use Assert\LazyAssertionException;
+use Domain\Auth\Exception\IsNotAnAuthorException;
+use Domain\Auth\Exception\NotLoggedException;
+use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Blog\Entity\Post;
 use Domain\Blog\Exception\InvalidPostDataException;
 use Domain\Blog\Port\PostRepositoryInterface;
@@ -12,11 +15,20 @@ use function Assert\lazy;
 class CreatePost
 {
 
-    public function __construct(private PostRepositoryInterface $postRepository)
-    {
+    public function __construct(
+        private PostRepositoryInterface $postRepository,
+        private SessionRepositoryInterface $sessionRepository
+    ) {
     }
     public function execute(array $data): ?Post
     {
+        if(!$this->sessionRepository->isLogged()) {
+            throw new NotLoggedException('Vous devez être connecté pour créer un post');
+        }
+        if(!$this->sessionRepository->isAuthor()) {
+            throw new IsNotAnAuthorException('Il faut être auteur pour créer un post');
+        }
+
         $post = new Post(
             $data['title'] ?? '', 
             $data['content'] ?? '', 

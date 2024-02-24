@@ -6,7 +6,8 @@ class User
 {
     public function __construct(
         private string $email,
-        private string $password
+        private string $password,
+        private array $roles = []
     ) {
     }
 
@@ -17,5 +18,10 @@ class User
     public function getPassword(): string
     {
         return $this->password;
+    }
+
+    public function getRoles(): array
+    {
+        return $this->roles;
     }
 }
