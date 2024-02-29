@@ -12,24 +12,38 @@
         }
         public function saveUser(SessionUser $sessionUser): void
         {
-            $_SESSION['user'] = $sessionUser->getEmail();
+            $_SESSION['user'] = $sessionUser;
         }
 
         public function getUser(): ?SessionUser
         {
             if (isset($_SESSION['user'])) {
-                return new SessionUser($_SESSION['user']);
+                return $_SESSION['user'];
             }
             return null;
         }
 
         public function isLogged(): bool
         {
+            if (isset($_SESSION['user'])) {
+                return true;
+            }
             return false;
         }
 
         public function isAuthor(): bool
         {
+            if (isset($_SESSION['user'])) {
+                return $_SESSION['user']->hasRole('author');
+            }
+            return false;
+        }
+
+        public function isPublisher(): bool
+        {
+            if (isset($_SESSION['user'])) {
+                return $_SESSION['user']->hasRole('publisher');
+            }
             return false;
         }
 

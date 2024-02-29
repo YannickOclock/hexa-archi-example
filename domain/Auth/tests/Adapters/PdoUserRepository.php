@@ -23,6 +23,9 @@ class PdoUserRepository implements UserRepositoryInterface
         if ($row === false) {
             return null;
         }
-        return new User($row['email'], $row['password']);
+        return new User(
+            $row['email'], 
+            $row['password'], 
+            json_decode($row['roles']));
     }
 }

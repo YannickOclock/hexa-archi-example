@@ -2,8 +2,10 @@
 
 use function DI\create;
 
+use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Auth\Port\UserRepositoryInterface;
 use Domain\Auth\Tests\Adapters\PdoUserRepository;
+use Domain\Auth\Tests\Adapters\SessionUserRepository;
 use Domain\Blog\Port\PostRepositoryInterface;
 use Domain\Blog\Tests\Adapters\PdoPostRepository;
 use Twig\Environment;
@@ -13,6 +15,7 @@ return [
     // Bind an interface to an implementation
     PostRepositoryInterface::class => create(PdoPostRepository::class),
     UserRepositoryInterface::class => create(PdoUserRepository::class),
+    SessionRepositoryInterface::class => create(SessionUserRepository::class),
 
     AltoRouter::class => function () {
         $router = new AltoRouter();

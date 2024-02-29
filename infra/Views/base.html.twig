@@ -12,10 +12,19 @@
 </head>
 <body>
     <main class="container">
-        <ul>
-            <li><a href="{{ router.generate('main-home') }}">Accueil</a></li>
-            <li><a href="{{ router.generate('main-login') }}">Se connecter</a></li>
-        </ul>
+        <nav>
+            <ul>
+                <li><a href="{{ router.generate('main-home') }}">Créer un post</a></li>
+                {% if session.getUser %}
+                    <li>Bonjour {{ session.getUser.getEmail }} 
+                        ( {% if session.isAuthor %}Editeur,{% endif %}{% if session.isPublisher %}Auteur{% endif %} )
+                    </li>
+                {% else %}
+                    <li>Bonjour, vous n'êtes pas connecté</li>
+                    <li><a href="{{ router.generate('main-login') }}">Se connecter</a></li>
+                {% endif %}
+            </ul>
+        </nav>
         {% block content %}
         {% endblock %}
     </main>

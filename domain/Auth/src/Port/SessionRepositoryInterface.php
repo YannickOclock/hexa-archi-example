@@ -10,5 +10,6 @@
         public function getUser(): ?SessionUser;
         public function isLogged(): bool;
         public function isAuthor(): bool;
+        public function isPublisher(): bool;
         public function logout(): void;
     }

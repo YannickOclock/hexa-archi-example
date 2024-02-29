@@ -30,6 +30,12 @@
             return $this->sessionUser->hasRole('author');
         }
 
+        public function isPublisher(): bool
+        {
+            // Implement the logic for checking if the user is a publisher.
+            return $this->sessionUser->hasRole('publisher');
+        }
+
         public function logout(): void
         {
             // Implement the logic for logging out the user.

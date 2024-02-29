@@ -4,11 +4,13 @@ use Domain\Auth\Entity\SessionUser;
 use Domain\Auth\Tests\Adapters\InMemorySessionUserRepository;
 use Domain\Blog\Entity\Post;
 use Domain\Blog\Exception\InvalidPostDataException;
+use Domain\Blog\ObjectValue\StatusPost;
 use Domain\Blog\Tests\Adapters\InMemoryPostRepository;
 use Domain\Blog\Tests\Adapters\PdoPostRepository;
 use Domain\Blog\UseCase\CreatePost;
 
-it("should create a post (after authenticate)", function () {
+function createSuccessfullPost()
+{
     $sessionRepository = new InMemorySessionUserRepository();
     $sessionRepository->saveUser(new SessionUser('john@doe.fr', ['author']));
 
@@ -18,11 +20,23 @@ it("should create a post (after authenticate)", function () {
     $post = $useCase->execute([
         'title' => 'My first post',
         'content' => 'This is my first post content',
-        'publishedAt' => new DateTime('2020-01-01 00:00:00')
     ]);
 
+    return [
+        'post' => $post,
+        'repository' => $repository
+    ];
+}
+
+it("should create a post (after authenticate)", function () {
+    ['post' => $post, 'repository' => $repository] = createSuccessfullPost();
     $this->assertInstanceOf(Post::class, $post);
     $this->assertEquals($post, $repository->find($post->uuid));
+});
+
+it("should be a draft post (on create)", function () {
+    ['post' => $post, 'repository' => $repository] = createSuccessfullPost();
+    $this->assertEquals($post->status->getStatus(), StatusPost::DRAFT);
 });
 
 it("should throw an InvalidPostException if the post is invalid", function ($postData) {
@@ -33,7 +47,7 @@ it("should throw an InvalidPostException if the post is invalid", function ($pos
     $useCase = new CreatePost($repository, $sessionRepository);
     $useCase->execute($postData);
 })->with([
-    [['title' => 'My first post', 'publishedAt' => new DateTime('2020-01-01 00:00:00')]],
-    [['publishedAt' => new DateTime('2020-01-01 00:00:00')]],
+    [['title' => 'My first post']],
+    [['content' => 'This is my first post content']],
     [[]]
 ])->expectException(InvalidPostDataException::class);
