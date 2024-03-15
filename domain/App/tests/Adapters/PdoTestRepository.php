@@ -11,12 +11,11 @@ class PdoTestRepository
 
     private function __construct()
     {
-        $configData = parse_ini_file(__DIR__ . '/../../../../app/pdo.ini');
         try {
             $this->dbh = new PDO(
-                "mysql:host={$configData['DB_HOST']};dbname={$configData['DB_NAME']};charset=utf8",
-                $configData['DB_USERNAME'],
-                $configData['DB_PASSWORD'],
+                "mysql:host={$_ENV['DB_TEST_HOST']};dbname={$_ENV['DB_TEST_NAME']};charset=utf8",
+                $_ENV['DB_TEST_USER'],
+                $_ENV['DB_TEST_PASSWORD'],
                 array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING) 
             );
         } catch (\Exception $exception) {

@@ -4,7 +4,7 @@
     final class NotFoundEmailAuthException extends \Exception
     {
         private array $errors;
-        private function __construct(string $message)
+        public function __construct(string $message)
         {
             parent::__construct($message);
         }

@@ -1,5 +1,5 @@
 <?php
-    namespace Domain\Auth\Tests\Adapters;
+    namespace App\Session;
 
     use Domain\Auth\Entity\SessionUser;
     use Domain\Auth\Port\SessionRepositoryInterface;

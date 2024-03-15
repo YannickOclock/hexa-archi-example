@@ -1,8 +1,7 @@
 <?php
 
-namespace Domain\Blog\Tests\Adapters;
+namespace App\Pdo;
 
-use Domain\App\Tests\Adapters\PdoTestRepository;
 use Domain\Blog\Entity\Post;
 use Domain\Blog\Port\PostRepositoryInterface;
 use PDO;
@@ -12,7 +11,7 @@ class PdoPostRepository implements PostRepositoryInterface
     private PDO $pdo;
     public function __construct()
     {
-        $this->pdo = PdoTestRepository::getPDO();
+        $this->pdo = PdoRepository::getPDO();
     }
 
     public function save(Post $post): void

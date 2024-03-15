@@ -2,12 +2,12 @@
 
 use function DI\create;
 
+use App\Pdo\PdoPostRepository;
+use App\Pdo\PdoUserRepository;
+use App\Session\SessionUserRepository;
 use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Auth\Port\UserRepositoryInterface;
-use Domain\Auth\Tests\Adapters\PdoUserRepository;
-use Domain\Auth\Tests\Adapters\SessionUserRepository;
 use Domain\Blog\Port\PostRepositoryInterface;
-use Domain\Blog\Tests\Adapters\PdoPostRepository;
 use Twig\Environment;
 use Twig\Loader\FilesystemLoader;
 

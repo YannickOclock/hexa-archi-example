@@ -17,6 +17,17 @@ it("should authenticate user (without any encryption)", function ($userData) {
     [['email' => 'john@doe.fr', 'password' => 'password']]
 ]);
 
+it("should verify session Roles with success auth user", function ($userData) {
+    $userRepository = UserMock::mockUserRepository("john@doe.fr", "password", ["publisher"]);
+    $sessionRepository = new InMemorySessionUserRepository();
+    $useCase = new AuthUser($userRepository, $sessionRepository);
+    $isAuthenticate = $useCase->execute($userData);
+    $this->assertEquals(true, $sessionRepository->isLogged());
+    $this->assertEquals(true, $sessionRepository->isPublisher());
+})->with([
+    [['email' => 'john@doe.fr', 'password' => 'password']]
+]);
+
 it("should not authenticate user (without any encryption)", function ($userData) {
     $userRepository = UserMock::mockUserRepository();
     $sessionRepository = new InMemorySessionUserRepository();

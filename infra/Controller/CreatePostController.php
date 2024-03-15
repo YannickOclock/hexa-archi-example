@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Blog\UseCase\CreatePost;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -10,6 +11,11 @@ class CreatePostController extends AbstractController
 {
     public function handleRequest(CreatePost $useCase, Request $request)
     {
+        $session = $this->sessionRepository;
+        if(!$session->isLogged() || !$session->isAuthor()) {
+            return $this->redirectToRoute('main-login');
+        }
+
         if($request->isMethod('GET')) {
             return $this->render('form.html.twig');
         }

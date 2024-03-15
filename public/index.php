@@ -5,8 +5,11 @@ use App\Controller\CreatePostController;
 use App\Controller\ErrorController;
 use App\Utils\Dispatcher;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Dotenv\Dotenv;
 
 $container = require __DIR__ . '/../app/bootstrap.php';
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__.'/../.env');
 
 // Dispatch
 $router = $container->get(AltoRouter::class);
