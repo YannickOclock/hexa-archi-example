@@ -14,6 +14,19 @@ class PdoUserRepository implements UserRepositoryInterface
         $this->pdo = PdoRepository::getPDO();
     }
 
+    private function getDomainRolesFromDb($dbRoles) 
+    {
+        $dbRoles = json_decode($dbRoles);
+        $domainRoles = [];
+        foreach($dbRoles as $dbRole) {
+            if($dbRole === "ROLE_AUTHOR")
+                $domainRoles[] = "author";
+            if($dbRole === "ROLE_PUBLISHER")
+                $domainRoles[] = "publisher";
+        }
+        return $domainRoles;
+    }
+
     public function findByEmail(string $email): User|null
     {
         $stmt = $this->pdo->prepare('SELECT * FROM users WHERE email = :email');
@@ -25,6 +38,6 @@ class PdoUserRepository implements UserRepositoryInterface
         return new User(
             $row['email'], 
             $row['password'], 
-            json_decode($row['roles']));
+            $this->getDomainRolesFromDb($row['roles']));
     }
 }

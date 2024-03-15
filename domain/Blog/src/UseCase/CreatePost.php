@@ -9,6 +9,7 @@ use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Blog\Entity\Post;
 use Domain\Blog\Exception\InvalidPostDataException;
 use Domain\Blog\Port\PostRepositoryInterface;
+use PDOException;
 
 use function Assert\lazy;
 
@@ -43,20 +44,22 @@ class CreatePost
             return $post;
         } catch (LazyAssertionException $e) {
             // On récupère l'ensemble des message d'erreur de la fonction validate
-            throw InvalidPostDataException::withMessage($e->getMessage());
+            throw InvalidPostDataException::withErrors($e->getErrorExceptions());
+        } catch (PDOException $e) {
+            throw InvalidPostDataException::withMessage("Problème dans la base SQL");
         }
     }
 
     protected function validate(Post $post): void
     {
         lazy()
-            ->that($post->title)
-                ->notBlank()
-                ->minLength(5)
-            ->that($post->content)
-                ->notBlank()
-                ->minLength(10)
-            ->that($post->publishedAt)
+            ->that($post->title, 'title')
+                ->notBlank("Le titre ne doit pas être vide")
+                ->minLength(5, "Le titre doit faire au moins 5 caractères")
+            ->that($post->content, 'content')
+                ->notBlank("Le contenu ne doit pas être vide")
+                ->minLength(10, "Le contenu doit faire au moins 10 caractères")
+            ->that($post->publishedAt, 'publishedAt')
                 ->null()
             ->verifyNow()
         ;

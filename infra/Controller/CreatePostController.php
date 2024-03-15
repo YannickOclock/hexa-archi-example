@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use Domain\Auth\Port\SessionRepositoryInterface;
+use Domain\Blog\Exception\InvalidPostDataException;
 use Domain\Blog\UseCase\CreatePost;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,11 +22,17 @@ class CreatePostController extends AbstractController
         }
 
         // traiter le formulaire en utilisant le use case
-        $post = $useCase->execute([
-            'title' => $request->request->get('title', ''), 
-            'content' => $request->request->get('content', ''),
-            'publishedAt' => $request->request->has('is_published') ? new \DateTime() : null
-        ]);
-        return new Response("<h1>{$post->title}</h1>", 201);
+        try {
+            $post = $useCase->execute([
+                'title' => $request->request->get('title', ''), 
+                'content' => $request->request->get('content', ''),
+                //'publishedAt' => $request->request->has('is_published') ? new \DateTime() : null
+            ]);
+            return new Response("<h1>{$post->title}</h1>", 201);
+        } catch(InvalidPostDataException $e) {
+            return $this->render('form.html.twig', [
+                'errors' => $e->getErrors()
+            ]);
+        }
     }
 }

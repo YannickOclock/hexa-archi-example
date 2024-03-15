@@ -45,20 +45,20 @@ class CreateAndPublishPost
             return $post;
         } catch (LazyAssertionException $e) {
             // On récupère l'ensemble des message d'erreur de la fonction validate
-            throw InvalidPostDataException::withMessage($e->getMessage());
+            throw InvalidPostDataException::withErrors($e->getErrorExceptions());
         }
     }
 
     protected function validate(Post $post): void
     {
         lazy()
-            ->that($post->title)
-                ->notBlank()
-                ->minLength(5)
-            ->that($post->content)
-                ->notBlank()
-                ->minLength(10)
-            ->that($post->publishedAt)
+            ->that($post->title, 'title')
+                ->notBlank("Le titre ne doit pas être vide")
+                ->minLength(5, "Le titre doit faire au moins 5 caractères")
+            ->that($post->content, 'content')
+                ->notBlank("Le contenu ne doit pas être vide")
+                ->minLength(10, "Le contenu doit faire au moins 10 caractères")
+            ->that($post->publishedAt, 'publishedAt')
                 ->nullOr()
                 ->isInstanceOf(\DateTimeInterface::class)
             ->verifyNow()    

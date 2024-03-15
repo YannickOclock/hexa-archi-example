@@ -14,6 +14,10 @@ class AuthController extends AbstractController
 {
     public function handleRequest(Request $request, AuthUser $useCase)
     {
+        if($this->sessionRepository->isLogged()) {
+            return $this->redirectToRoute('main-home');
+        }
+
         if($request->isMethod('GET')) {
             return $this->render('auth.form.html.twig');
         }
@@ -31,5 +35,11 @@ class AuthController extends AbstractController
         }
 
         $this->redirectToRoute('main-home');
+    }
+
+    public function logout()
+    {
+        $this->sessionRepository->logout();
+        return $this->redirectToRoute('main-login');
     }
 }

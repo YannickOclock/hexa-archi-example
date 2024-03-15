@@ -17,11 +17,12 @@
                 {% if session.getUser %}
                     <li><a href="{{ router.generate('main-home') }}">Créer un post</a></li>
                     <li>Bonjour {{ session.getUser.getEmail }} 
-                        ( 
-                            {% if session.isAuthor %}Editeur,{% endif %}
-                            {% if session.isPublisher %}Auteur{% endif %} 
+                        (
+                            {% if session.isAuthor %}Auteur{% endif %}
+                            {% if session.isPublisher %}, Editeur{% endif %}
                         )
                     </li>
+                    <li><a href="{{ router.generate('main-logout') }}">Se déconnecter</a></li>
                 {% else %}
                     <li>Bonjour, vous n'êtes pas connecté</li>
                     <li><a href="{{ router.generate('main-login') }}">Se connecter</a></li>

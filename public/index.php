@@ -15,8 +15,10 @@ $dotenv->load(__DIR__.'/../.env');
 $router = $container->get(AltoRouter::class);
 
 // Liste des routes
-$router->map('GET|POST', '/login', [AuthController::class, 'handleRequest'], 'main-login');
-$router->map('GET|POST', '/', [CreatePostController::class, 'handleRequest'], 'main-home');
+$router->map('GET|POST',    '/login', [AuthController::class, 'handleRequest'], 'main-login');
+$router->map('GET',         '/logout', [AuthController::class, 'logout'], 'main-logout');
+$router->map('GET|POST',    '/', [CreatePostController::class, 'handleRequest'], 'main-home');
+
 
 $match = $router->match();
 $dispatcher = new Dispatcher($match, [ErrorController::class, 'error404']);

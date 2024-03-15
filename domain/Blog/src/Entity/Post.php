@@ -13,7 +13,11 @@ class Post
     public StatusPost $status;
     public ?DateTimeInterface $publishedAt;
 
-    public function __construct(string $title = '', string $content = '', ?DateTimeInterface $publishedAt = null, string $uuid = null)
+    public function __construct(
+        string $title = '', 
+        string $content = '', 
+        ?DateTimeInterface $publishedAt = null, 
+        string $uuid = null)
     {
         $this->title = $title;
         $this->content = $content;
