@@ -4,11 +4,11 @@ namespace App\Presenter\Auth;
 
 use AltoRouter;
 use Domain\Auth\Port\SessionRepositoryInterface;
-use Domain\Auth\UseCase\AuthPresenter;
-use Domain\Auth\UseCase\AuthResponse;
+use Domain\Auth\UseCase\Login\LoginPresenter;
+use Domain\Auth\UseCase\Login\LoginResponse;
 use Twig\Environment;
 
-class TwigAuthPresenter implements AuthPresenter
+class TwigAuthLoginPresenter implements LoginPresenter
 {
     private string $viewmodel;
     private bool $redirect = false;
@@ -20,7 +20,7 @@ class TwigAuthPresenter implements AuthPresenter
     ) {
     }
 
-    public function present(AuthResponse $response): void
+    public function present(LoginResponse $response): void
     {
         $data = [
             'router' => $this->router,

@@ -1,10 +1,10 @@
 <?php
 
-namespace Domain\Auth\UseCase;
+namespace Domain\Auth\UseCase\Login;
 
 use Domain\App\Error\Notification;
 
-class AuthResponse
+class LoginResponse
 {
     private Notification $notification;
     private bool $authenticated = false;

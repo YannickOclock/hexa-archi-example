@@ -1,8 +1,8 @@
 <?php
 
-namespace Domain\Auth\UseCase;
+namespace Domain\Auth\UseCase\Login;
 
-class AuthRequest
+class LoginRequest
 {
     public string $email;
     public string $password;

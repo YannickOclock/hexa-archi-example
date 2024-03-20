@@ -4,14 +4,15 @@ namespace Domain\Auth\Tests;
 
 use Domain\Auth\Tests\Adapters\InMemorySessionUserRepository;
 use Domain\Auth\Tests\Mock\UserMock;
-use Domain\Auth\Tests\RequestBuilder\AuthRequestBuilder;
-use Domain\Auth\UseCase\AuthPresenter;
-use Domain\Auth\UseCase\AuthResponse;
-use Domain\Auth\UseCase\AuthUser;
+use Domain\Auth\Tests\RequestBuilder\LoginRequestBuilder;
+use Domain\Auth\UseCase\Login\LoginPresenter;
+use Domain\Auth\UseCase\Login\LoginRequest;
+use Domain\Auth\UseCase\Login\LoginResponse;
+use Domain\Auth\UseCase\Login\LoginUser;
 use PHPUnit\Framework\TestCase;
 
-class AuthUserTest extends TestCase implements AuthPresenter {
-    private AuthResponse $response;
+class AuthSessionUserTest extends TestCase implements LoginPresenter {
+    private LoginResponse $response;
     private InMemorySessionUserRepository $sessionRepository;
 
     public function setUp(): void
@@ -20,7 +21,7 @@ class AuthUserTest extends TestCase implements AuthPresenter {
         $this->sessionRepository = new InMemorySessionUserRepository();
     }
 
-    public function present(AuthResponse $response): void
+    public function present(LoginResponse $response): void
     {
         $this->response = $response;
     }
@@ -30,9 +31,9 @@ class AuthUserTest extends TestCase implements AuthPresenter {
     public function testShouldSaveEmailAddressInASessionUser()
     {
         $userRepository = UserMock::mockUserRepository();
-        $useCase = new AuthUser($userRepository, $this->sessionRepository);
+        $useCase = new LoginUser($userRepository, $this->sessionRepository);
 
-        $authRequest = AuthRequestBuilder::anAuthRequest()
+        $authRequest = LoginRequestBuilder::anAuthRequest()
             ->withEmail('john@doe.fr')
             ->withPassword('password')
             ->isPosted(true)

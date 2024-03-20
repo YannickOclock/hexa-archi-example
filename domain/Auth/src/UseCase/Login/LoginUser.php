@@ -1,6 +1,6 @@
 <?php
 
-namespace Domain\Auth\UseCase;
+namespace Domain\Auth\UseCase\Login;
 
 use Assert\LazyAssertionException;
 use Domain\Auth\Entity\SessionUser;
@@ -10,7 +10,7 @@ use Domain\Auth\Port\SessionRepositoryInterface;
 
 use function Assert\lazy;
 
-class AuthUser
+class LoginUser
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
@@ -18,12 +18,12 @@ class AuthUser
     ) {
     }
 
-    public function execute(AuthRequest $request, AuthPresenter $presenter): void
+    public function execute(LoginRequest $request, LoginPresenter $presenter): void
     {
-        $response = new AuthResponse();
+        $response = new LoginResponse();
 
         if($request->isPosted) {
-            $isValid = $this->auth($request, $response);
+            $isValid = $this->login($request, $response);
             if($isValid) {
                 $response->setAuthenticated();
             }
@@ -32,14 +32,15 @@ class AuthUser
         $presenter->present($response);
     }
 
-    protected function auth(AuthRequest $request, AuthResponse $response): bool
+    protected function login(LoginRequest $request, LoginResponse $response): bool
     {
         // valider les données du formulaire en premier
         $isValid = $this->validateRequest($request, $response);
 
         if($isValid) {
             // Créer le User
-            $userData = new User($request->email ?? '', $request->password ?? '');
+            $userData = new User();
+            $userData->login($request->email ?? '', $request->password ?? '');
 
             // si les données du formulaire sont OK, je chercher l'utilisateur en base
             $userFrom = $this->userRepository->findByEmail($request->email);
@@ -47,6 +48,7 @@ class AuthUser
                 $response->addError('global', 'Votre email n\'est pas enregistré dans notre base de données. Veuillez vous inscrire.');
                 return false;
             }
+
             // si l'utilisateur est trouvé, je compare les mots de passe
             if($userFrom->getPassword() !== $userData->getPassword()) {
                 $response->addError('global', 'Le mot de passe est incorrect');
@@ -67,7 +69,7 @@ class AuthUser
         $this->sessionRepository->logout();
     }
 
-    protected function validateRequest(AuthRequest $request, AuthResponse $response): bool
+    protected function validateRequest(LoginRequest $request, LoginResponse $response): bool
     {
         try {
             lazy()

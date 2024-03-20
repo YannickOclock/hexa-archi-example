@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use AltoRouter;
-use App\Presenter\Auth\TwigAuthPresenter;
+use App\Presenter\Auth\TwigAuthLoginPresenter;
 use Domain\Auth\Port\SessionRepositoryInterface;
-use Domain\Auth\UseCase\AuthRequest;
-use Domain\Auth\UseCase\AuthUser;
+use Domain\Auth\UseCase\Login\LoginRequest;
+use Domain\Auth\UseCase\Login\LoginUser;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -21,16 +21,16 @@ class AuthController
     ) {
     }
 
-    public function handleRequest(Request $request, AuthUser $useCase): Response
+    public function handleRequest(Request $request, LoginUser $useCase): Response
     {
-        $presenter = new TwigAuthPresenter($this->twig, $this->router, $this->sessionRepository);
+        $presenter = new TwigAuthLoginPresenter($this->twig, $this->router, $this->sessionRepository);
 
-        $authRequest = new AuthRequest();
-        $authRequest->email = $request->request->get('email') ?? '';
-        $authRequest->password = $request->request->get('password') ?? '';
-        $authRequest->isPosted = $request->isMethod('POST');
+        $loginRequest = new LoginRequest();
+        $loginRequest->email = $request->request->get('email') ?? '';
+        $loginRequest->password = $request->request->get('password') ?? '';
+        $loginRequest->isPosted = $request->isMethod('POST');
 
-        $useCase->execute($authRequest, $presenter);
+        $useCase->execute($loginRequest, $presenter);
 
         if ($presenter->redirect()) {
             return new RedirectResponse($presenter->viewModel());
@@ -38,7 +38,7 @@ class AuthController
         return new Response($presenter->viewModel());
     }
 
-    public function logout(AuthUser $useCase): Response
+    public function logout(LoginUser $useCase): Response
     {
         $useCase->logout();
         return new RedirectResponse($this->router->generate('main-home'));

@@ -1,16 +1,18 @@
 <?php
 
+namespace Domain\Auth\Tests;
+
 use Domain\Auth\Tests\Adapters\InMemorySessionUserRepository;
 use Domain\Auth\Tests\Mock\UserMock;
-use Domain\Auth\UseCase\AuthUser;
-use Domain\Auth\Tests\RequestBuilder\AuthRequestBuilder;
-use Domain\Auth\UseCase\AuthPresenter;
-use Domain\Auth\UseCase\AuthResponse;
+use Domain\Auth\Tests\RequestBuilder\LoginRequestBuilder;
+use Domain\Auth\UseCase\Login\LoginPresenter;
+use Domain\Auth\UseCase\Login\LoginResponse;
+use Domain\Auth\UseCase\Login\LoginUser;
 use PHPUnit\Framework\TestCase;
 
-class AuthUserTest extends TestCase implements AuthPresenter
+class AuthLoginUserTest extends TestCase implements LoginPresenter
 {
-    private AuthResponse $response;
+    private LoginResponse $response;
     private InMemorySessionUserRepository $sessionRepository;
 
     public function setUp(): void
@@ -19,7 +21,7 @@ class AuthUserTest extends TestCase implements AuthPresenter
         $this->sessionRepository = new InMemorySessionUserRepository();
     }
 
-    public function present(AuthResponse $response): void
+    public function present(LoginResponse $response): void
     {
         $this->response = $response;
     }
@@ -28,9 +30,9 @@ class AuthUserTest extends TestCase implements AuthPresenter
     public function testShouldAuthenticateUserWithoutAnyEncryption()
     {
         $userRepository = UserMock::mockUserRepository();
-        $useCase = new AuthUser($userRepository, $this->sessionRepository);
+        $useCase = new LoginUser($userRepository, $this->sessionRepository);
 
-        $authRequest = AuthRequestBuilder::anAuthRequest()
+        $authRequest = LoginRequestBuilder::anAuthRequest()
             ->withEmail('john@doe.fr')
             ->withPassword('password')
             ->isPosted(true)
@@ -43,9 +45,9 @@ class AuthUserTest extends TestCase implements AuthPresenter
     public function testShouldVerifySessionRolesWithSuccessAuthUser()
     {
         $userRepository = UserMock::mockUserRepository("john@doe.fr", "password", ["publisher"]);
-        $useCase = new AuthUser($userRepository, $this->sessionRepository);
+        $useCase = new LoginUser($userRepository, $this->sessionRepository);
 
-        $authRequest = AuthRequestBuilder::anAuthRequest()
+        $authRequest = LoginRequestBuilder::anAuthRequest()
             ->withEmail('john@doe.fr')
             ->withPassword('password')
             ->isPosted(true)
@@ -59,9 +61,9 @@ class AuthUserTest extends TestCase implements AuthPresenter
     public function testShouldNotifyBadRequestIfPasswordTooShort()
     {
         $userRepository = UserMock::mockUserRepository();
-        $useCase = new AuthUser($userRepository, $this->sessionRepository);
+        $useCase = new LoginUser($userRepository, $this->sessionRepository);
 
-        $authRequest = AuthRequestBuilder::anAuthRequest()
+        $authRequest = LoginRequestBuilder::anAuthRequest()
             ->withEmail('john@doe.fr')
             ->withPassword('pass')
             ->isPosted(true)
@@ -76,9 +78,9 @@ class AuthUserTest extends TestCase implements AuthPresenter
     public function testShouldNotifyBadRequestIfEmailIsNotValid()
     {
         $userRepository = UserMock::mockUserRepository();
-        $useCase = new AuthUser($userRepository, $this->sessionRepository);
+        $useCase = new LoginUser($userRepository, $this->sessionRepository);
 
-        $authRequest = AuthRequestBuilder::anAuthRequest()
+        $authRequest = LoginRequestBuilder::anAuthRequest()
             ->withEmail('john@doe')
             ->withPassword('password')
             ->isPosted(true)
@@ -92,9 +94,9 @@ class AuthUserTest extends TestCase implements AuthPresenter
     public function testShouldNotifyBadRequestIfUserNotFound()
     {
         $userRepository = UserMock::mockUserRepositoryNotFound();
-        $useCase = new AuthUser($userRepository, $this->sessionRepository);
+        $useCase = new LoginUser($userRepository, $this->sessionRepository);
 
-        $authRequest = AuthRequestBuilder::anAuthRequest()
+        $authRequest = LoginRequestBuilder::anAuthRequest()
             ->withEmail('john@doe.fr')
             ->withPassword('password')
             ->isPosted(true)

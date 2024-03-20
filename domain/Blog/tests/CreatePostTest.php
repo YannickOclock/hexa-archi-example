@@ -1,5 +1,7 @@
 <?php
 
+namespace Domain\Blog\Tests;
+
 use Domain\Blog\Tests\Adapters\InMemoryPostRepository;
 use Domain\Blog\Tests\Mock\SessionUserRepositoryMock;
 use Domain\Blog\Tests\RequestBuilder\CreatePostRequestBuilder;
