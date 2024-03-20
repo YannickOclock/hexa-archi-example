@@ -1,7 +1,7 @@
 <?php
 
 use App\Controller\AuthController;
-use App\Controller\CreatePostController;
+use App\Controller\BlogController;
 use App\Controller\ErrorController;
 use App\Controller\HomeController;
 use App\Utils\Dispatcher;
@@ -18,7 +18,7 @@ $router = $container->get(AltoRouter::class);
 // Liste des routes
 $router->map('GET|POST',    '/login', [AuthController::class, 'handleRequest'], 'main-login');
 $router->map('GET',         '/logout', [AuthController::class, 'logout'], 'main-logout');
-//$router->map('GET|POST',    '/', [CreatePostController::class, 'handleRequest'], 'main-home');
+$router->map('GET|POST',    '/post/create', [BlogController::class, 'handleRequest'], 'main-create-post');
 $router->map('GET',         '/', [HomeController::class, 'index'], 'main-home');
 
 

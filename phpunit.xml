@@ -12,10 +12,10 @@
     <source>
         <include>
             <directory suffix=".php">./domain</directory>
-            <directory suffix=".php">./infra</directory>
         </include>
         <exclude>
             <directory suffix=".php">./domain/*/tests</directory>
+            <directory suffix=".php">./infra</directory>
         </exclude>
     </source>
 </phpunit>

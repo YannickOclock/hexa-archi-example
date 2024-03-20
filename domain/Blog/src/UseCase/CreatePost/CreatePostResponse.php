@@ -8,7 +8,7 @@ use Domain\Blog\Entity\Post;
 class CreatePostResponse
 {
     private Notification $notification;
-    private Post $post;
+    private ?Post $post = null;
 
     public function __construct(
     ) {
@@ -20,7 +20,7 @@ class CreatePostResponse
         $this->post = $post;
     }
 
-    public function post(): Post
+    public function post(): ?Post
     {
         return $this->post;
     }

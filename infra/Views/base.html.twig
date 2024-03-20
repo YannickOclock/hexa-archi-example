@@ -15,7 +15,8 @@
         <nav>
             <ul>
                 {% if session.getUser %}
-                    <li><a href="{{ router.generate('main-home') }}">Créer un post</a></li>
+                    <li><a href="{{ router.generate('main-home') }}">Page d'accueil</a></li>
+                    <li><a href="{{ router.generate('main-create-post') }}">Créer un post</a></li>
                     <li>Bonjour {{ session.getUser.getEmail }} 
                         (
                             {% if session.isAuthor %}Auteur{% endif %}
