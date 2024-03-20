@@ -2,8 +2,8 @@
     namespace Domain\Auth\Tests\Mock;
 
     use Domain\Auth\Entity\User;
-use Domain\Auth\Port\UserRepositoryInterface;
-use Mockery;
+    use Domain\Auth\Port\UserRepositoryInterface;
+    use Mockery;
 
     class UserMock extends User
     {
@@ -21,7 +21,7 @@ use Mockery;
                 );
             return $userRepository;
         }
-        static function mockUserRepositoryNotFound(string $fakeEmail = "luc@doe.fr"): UserRepositoryInterface
+        static function mockUserRepositoryNotFound(string $fakeEmail = "john@doe.fr"): UserRepositoryInterface
         {
             $userRepository = Mockery::mock(UserRepositoryInterface::class);
             $userRepository->shouldReceive('findByEmail')

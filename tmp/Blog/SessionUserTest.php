@@ -4,13 +4,15 @@ namespace Domain\Auth\Tests;
 
 use Domain\Auth\Tests\Adapters\InMemorySessionUserRepository;
 use Domain\Auth\Tests\Mock\UserMock;
+use Domain\Auth\UseCase\AuthRequest;
 use Domain\Auth\UseCase\AuthUser;
 
 function simulateUser($pUserData) {
     $userRepository = UserMock::mockUserRepository();
     $sessionRepository = new InMemorySessionUserRepository();
     $useCase = new AuthUser($userRepository, $sessionRepository);
-    $isAuthenticate = $useCase->execute($pUserData);
+    $authRequest = new AuthRequest($pUserData['email'], $pUserData['password']);
+    $useCase->execute($authRequest);
     return $sessionRepository;
 }
 

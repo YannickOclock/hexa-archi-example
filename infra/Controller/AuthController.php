@@ -3,43 +3,46 @@
 namespace App\Controller;
 
 use AltoRouter;
+use App\Presenter\Auth\TwigAuthPresenter;
 use Domain\Auth\Exception\BadCredentialsAuthException;
 use Domain\Auth\Exception\InvalidAuthPostDataException;
 use Domain\Auth\Exception\NotFoundEmailAuthException;
+use Domain\Auth\Port\SessionRepositoryInterface;
+use Domain\Auth\UseCase\AuthRequest;
 use Domain\Auth\UseCase\AuthUser;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Twig\Environment;
 
-class AuthController extends AbstractController
+class AuthController
 {
-    public function handleRequest(Request $request, AuthUser $useCase)
+    public function __construct(
+        protected Environment $twig,
+        protected AltoRouter $router,
+        protected SessionRepositoryInterface $sessionRepository
+    ){}
+
+    public function handleRequest(Request $request, AuthUser $useCase): Response
     {
-        if($this->sessionRepository->isLogged()) {
-            return $this->redirectToRoute('main-home');
-        }
+        $presenter = new TwigAuthPresenter($this->twig, $this->router, $this->sessionRepository);
 
-        if($request->isMethod('GET')) {
-            return $this->render('auth.form.html.twig');
-        }
+        $authRequest = new AuthRequest();
+        $authRequest->email = $request->request->get('email') ?? '';
+        $authRequest->password = $request->request->get('password') ?? '';
+        $authRequest->isPosted = $request->isMethod('POST');
 
-        // traiter le formulaire en utilisant le use case
-        try {
-            $useCase->execute([
-                'email' => $request->request->get('email', ''), 
-                'password' => $request->request->get('password', '')
-            ]);
-        } catch (InvalidAuthPostDataException | BadCredentialsAuthException | NotFoundEmailAuthException $e) {
-            return $this->render('auth.form.html.twig', [
-                'errors' => $e->getErrors()
-            ]);
-        }
+        $useCase->execute($authRequest, $presenter);
 
-        $this->redirectToRoute('main-home');
+        if ($presenter->redirect()) {
+            return new RedirectResponse($presenter->viewModel());
+        }
+        return new Response($presenter->viewModel());
     }
 
-    public function logout()
+    public function logout(AuthUser $useCase): Response
     {
-        $this->sessionRepository->logout();
-        return $this->redirectToRoute('main-login');
+        $useCase->logout();
+        return new RedirectResponse($this->router->generate('main-home'));
     }
 }

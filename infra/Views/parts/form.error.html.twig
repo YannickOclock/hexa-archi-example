@@ -1,5 +1,7 @@
-{% if errors[key] %}
-    {% for message in errors[key] %}
-        <div class="alert alert-danger my-1">{{ message }}</div>
+{% if notification.hasErrorFor(key) %}
+    {% for error in notification.getErrorsFor(key) %}
+        {% if error.fieldName == key %}
+            <div class="alert alert-danger my-1">{{ error.message }}</div>
+        {% endif %}
     {% endfor %}
 {% endif %}

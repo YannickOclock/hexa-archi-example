@@ -12,6 +12,7 @@
     },
     "autoload": {
         "psr-4": {
+            "Domain\\App\\": "domain/App/src",
             "Domain\\Blog\\": "domain/Blog/src",
             "Domain\\Auth\\": "domain/Auth/src",
             "App\\": "infra"

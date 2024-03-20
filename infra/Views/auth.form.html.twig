@@ -5,12 +5,12 @@
     {% include "parts/form.error.html.twig" with {'key': 'global'} %}
 
     <form action="" method="post">
-        <div class="form-group {{ errors['email'] ? 'invalid':'' }}">
+        <div class="form-group {{ notification.hasErrorFor('email') ? 'invalid':'' }}">
             <label for="email">Adresse email</label>
-            <input type="text" class="form-control" id="email" name="email" >
+            <input type="text" class="form-control" id="email" name="email">
             {% include "parts/form.error.html.twig" with {'key': 'email'} %}
         </div>
-        <div class="form-group {{ errors['password'] ? 'invalid':'' }}">
+        <div class="form-group {{ notification.hasErrorFor('password') ? 'invalid':'' }}">
             <label for="password">Mot de passe</label>
             <input type="password" class="form-control" id="password" name="password">
             {% include "parts/form.error.html.twig" with {'key': 'password'} %}
