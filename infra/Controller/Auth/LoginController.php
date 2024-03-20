@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Auth;
 
 use AltoRouter;
 use App\Presenter\Auth\TwigAuthLoginPresenter;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class AuthController
+class LoginController
 {
     public function __construct(
         protected Environment $twig,

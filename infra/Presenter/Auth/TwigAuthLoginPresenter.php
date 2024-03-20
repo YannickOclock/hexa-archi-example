@@ -32,7 +32,7 @@ class TwigAuthLoginPresenter implements LoginPresenter
             $this->redirect = true;
             $this->viewmodel = $this->router->generate('main-home');
         } else {
-            $this->viewmodel = $this->twig->render('auth.form.html.twig', $data);
+            $this->viewmodel = $this->twig->render('auth/form.html.twig', $data);
         }
     }
 

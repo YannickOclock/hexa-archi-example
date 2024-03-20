@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Controller;
+namespace App\Controller\Blog;
 
 use AltoRouter;
 use App\Presenter\Blog\TwigCreatePostPresenter;
@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Twig\Environment;
 
-class BlogController
+class CreatePostController
 {
     public function __construct(
         protected Environment $twig,

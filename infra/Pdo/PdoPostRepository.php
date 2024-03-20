@@ -40,4 +40,14 @@ class PdoPostRepository implements PostRepositoryInterface
         }
         return new Post($row['title'], $row['content'], $row['published_at'] ? new \DateTime($row['published_at']) : null, $row['uuid']);
     }
+
+    public function findAll(): array
+    {
+        $stmt = $this->pdo->query('SELECT * FROM posts');
+        $posts = [];
+        while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
+            $posts[] = new Post($row['title'], $row['content'], $row['published_at'] ? new \DateTime($row['published_at']) : null, $row['uuid']);
+        }
+        return $posts;
+    }
 }

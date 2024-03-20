@@ -9,6 +9,6 @@ class ErrorController extends AbstractController
 {
     public function error404()
     {
-        return $this->render('error404.html.twig');
+        return $this->render('errors/error404.html.twig');
     }
 }

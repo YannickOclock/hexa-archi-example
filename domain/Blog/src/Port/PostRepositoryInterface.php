@@ -8,4 +8,5 @@ interface PostRepositoryInterface
 {
     public function save(Post $post): bool;
     public function find(string $uuid): ?Post;
+    public function findAll(): array;
 }

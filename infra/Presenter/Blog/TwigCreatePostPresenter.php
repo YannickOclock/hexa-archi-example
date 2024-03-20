@@ -32,7 +32,7 @@ class TwigCreatePostPresenter implements CreatePostPresenter
             $this->redirect = true;
             $this->viewmodel = $this->router->generate('main-home');
         } else {
-            $this->viewmodel = $this->twig->render('form.html.twig', $data);
+            $this->viewmodel = $this->twig->render('blog/form.html.twig', $data);
         }
     }
 

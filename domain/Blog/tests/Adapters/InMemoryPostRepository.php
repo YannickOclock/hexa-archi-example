@@ -19,4 +19,9 @@ class InMemoryPostRepository implements PostRepositoryInterface
     {
         return $this->posts[$uuid] ?? null;
     }
+
+    public function findAll(): array
+    {
+        return $this->posts;
+    }
 }
