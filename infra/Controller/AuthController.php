@@ -4,9 +4,6 @@ namespace App\Controller;
 
 use AltoRouter;
 use App\Presenter\Auth\TwigAuthPresenter;
-use Domain\Auth\Exception\BadCredentialsAuthException;
-use Domain\Auth\Exception\InvalidAuthPostDataException;
-use Domain\Auth\Exception\NotFoundEmailAuthException;
 use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Auth\UseCase\AuthRequest;
 use Domain\Auth\UseCase\AuthUser;
@@ -21,7 +18,8 @@ class AuthController
         protected Environment $twig,
         protected AltoRouter $router,
         protected SessionRepositoryInterface $sessionRepository
-    ){}
+    ) {
+    }
 
     public function handleRequest(Request $request, AuthUser $useCase): Response
     {

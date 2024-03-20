@@ -99,7 +99,7 @@ class AuthUserTest extends TestCase implements AuthPresenter
             ->withPassword('password')
             ->isPosted(true)
             ->build();
-        
+
         $useCase->execute($authRequest, $this);
         $this->assertFalse($this->response->isAuthenticated());
         $this->assertNotEmpty($this->response->notification()->getErrors());

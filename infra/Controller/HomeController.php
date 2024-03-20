@@ -1,11 +1,11 @@
 <?php
 
-    namespace App\Controller;
+namespace App\Controller;
 
-    class HomeController extends AbstractController
+class HomeController extends AbstractController
+{
+    public function index()
     {
-        public function index()
-        {
-            return $this->render('home.html.twig');
-        }
+        return $this->render('home.html.twig');
     }
+}

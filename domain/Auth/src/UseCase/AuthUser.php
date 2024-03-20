@@ -5,7 +5,6 @@ namespace Domain\Auth\UseCase;
 use Assert\LazyAssertionException;
 use Domain\Auth\Entity\SessionUser;
 use Domain\Auth\Entity\User;
-use Domain\Auth\Exception\BadCredentialsAuthException;
 use Domain\Auth\Port\UserRepositoryInterface;
 use Domain\Auth\Port\SessionRepositoryInterface;
 
@@ -15,7 +14,8 @@ class AuthUser
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
-        private SessionRepositoryInterface $sessionRepository) {
+        private SessionRepositoryInterface $sessionRepository
+    ) {
     }
 
     public function execute(AuthRequest $request, AuthPresenter $presenter): void
@@ -43,7 +43,6 @@ class AuthUser
 
             // si les données du formulaire sont OK, je chercher l'utilisateur en base
             $userFrom = $this->userRepository->findByEmail($request->email);
-            dump($userFrom);
             if ($userFrom === null) {
                 $response->addError('global', 'Votre email n\'est pas enregistré dans notre base de données. Veuillez vous inscrire.');
                 return false;
@@ -79,7 +78,7 @@ class AuthUser
                 ->that($request->password, 'password')
                     ->notBlank("Le mot de passe ne doit pas être vide")
                     ->minLength(8, "Le mot de passe doit faire au moins 8 caractères")
-                ->verifyNow()    
+                ->verifyNow()
             ;
             return true;
         } catch (LazyAssertionException $e) {

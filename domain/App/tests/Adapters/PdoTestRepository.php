@@ -16,7 +16,7 @@ class PdoTestRepository
                 "mysql:host={$_ENV['DB_TEST_HOST']};dbname={$_ENV['DB_TEST_NAME']};charset=utf8",
                 $_ENV['DB_TEST_USER'],
                 $_ENV['DB_TEST_PASSWORD'],
-                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING) 
+                array(PDO::ATTR_ERRMODE => PDO::ERRMODE_WARNING)
             );
         } catch (\Exception $exception) {
             echo 'Erreur de connexion...<br>';

@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Utils;
 
 class Dispatcher
@@ -45,7 +46,7 @@ class Dispatcher
 
         // Getting DISPATCH infos provided by AltoRouter
         $this->parseTarget($match['target']);
-        
+
         // Getting URL params (dynamic parts in routes' URL pattern)
         $this->params = $match['params'];
     }
@@ -72,7 +73,7 @@ class Dispatcher
             // Controller#method or Controller::method or Controller@method
             $availableSeparators = ['#', '::', '@'];
             $separatorFound = false;
-            
+
             foreach ($availableSeparators as $currentSeparator) {
                 if (strpos($target, $currentSeparator) !== false) {
                     $separatorFound = true;
@@ -130,7 +131,7 @@ class Dispatcher
             }
             // method call with arguments unpacking
             //$controller->{$this->method}(...array_values($this->params));
-            return [ 
+            return [
                 1 => [
                     0 => $controllerName,
                     1 => $this->method,

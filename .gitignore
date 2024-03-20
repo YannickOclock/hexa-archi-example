@@ -1,3 +1,4 @@
 vendor
 .env
+tools
 var/report

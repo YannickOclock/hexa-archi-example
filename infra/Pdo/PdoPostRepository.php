@@ -5,6 +5,7 @@ namespace App\Pdo;
 use Domain\Blog\Entity\Post;
 use Domain\Blog\Port\PostRepositoryInterface;
 use PDO;
+use PDOException;
 
 class PdoPostRepository implements PostRepositoryInterface
 {
@@ -14,15 +15,19 @@ class PdoPostRepository implements PostRepositoryInterface
         $this->pdo = PdoRepository::getPDO();
     }
 
-    public function save(Post $post): void
+    public function save(Post $post): bool
     {
-        $stmt = $this->pdo->prepare('INSERT INTO posts (uuid, title, content, published_at) VALUES (:uuid, :title, :content, :published_at)');
-        $stmt->execute([
-            'uuid' => $post->uuid,
-            'title' => $post->title,
-            'content' => $post->content,
-            'published_at' => $post->publishedAt ? $post->publishedAt->format('Y-m-d H:i:s') : null,
-        ]);
+        try {
+            $stmt = $this->pdo->prepare('INSERT INTO posts (uuid, title, content, published_at) VALUES (:uuid, :title, :content, :published_at)');
+            return $stmt->execute([
+                'uuid' => $post->uuid,
+                'title' => $post->title,
+                'content' => $post->content,
+                'published_at' => $post->publishedAt ? $post->publishedAt->format('Y-m-d H:i:s') : null,
+            ]);
+        } catch (PDOException $e) {
+            return false;
+        }
     }
 
     public function find(string $uuid): ?Post
