@@ -11,7 +11,6 @@ use function Assert\lazy;
 
 readonly class CreatePost
 {
-
     public function __construct(
         private PostRepositoryInterface    $postRepository,
         private SessionRepositoryInterface $sessionRepository

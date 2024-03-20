@@ -37,7 +37,7 @@ class AuthRegisterUserTest extends TestCase implements RegisterPresenter
             ->withPasswordConfirmation('password')
             ->isPosted(true)
             ->build();
-        
+
         $registerUser->execute($request, $this);
         $this->assertEquals('john@doe.fr', $this->response->user()->getEmail());
     }

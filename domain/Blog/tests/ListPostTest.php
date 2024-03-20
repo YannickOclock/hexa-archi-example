@@ -20,7 +20,8 @@ class ListPostTest extends TestCase implements ListPostPresenter
         $this->response = $response;
     }
 
-    public function setUp(): void {
+    public function setUp(): void
+    {
         $this->postRepository = new InMemoryPostRepository();
         $post = new Post();
         $post->title = 'Title';

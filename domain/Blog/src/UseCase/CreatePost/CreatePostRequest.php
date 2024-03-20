@@ -5,7 +5,8 @@ namespace Domain\Blog\UseCase\CreatePost;
 use DateTime;
 use Domain\App\Error\Notification;
 
-class CreatePostRequest {
+class CreatePostRequest
+{
     public string $title = '';
     public string $content = '';
     public ?string $publishedAt = null;

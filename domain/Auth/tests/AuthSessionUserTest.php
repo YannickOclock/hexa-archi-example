@@ -11,7 +11,8 @@ use Domain\Auth\UseCase\Login\LoginResponse;
 use Domain\Auth\UseCase\Login\LoginUser;
 use PHPUnit\Framework\TestCase;
 
-class AuthSessionUserTest extends TestCase implements LoginPresenter {
+class AuthSessionUserTest extends TestCase implements LoginPresenter
+{
     private LoginResponse $response;
     private InMemorySessionUserRepository $sessionRepository;
 
@@ -38,7 +39,7 @@ class AuthSessionUserTest extends TestCase implements LoginPresenter {
             ->withPassword('password')
             ->isPosted(true)
             ->build();
-        
+
         $useCase->execute($authRequest, $this);
         $this->assertEquals('john@doe.fr', $this->sessionRepository->getUser()->getEmail());
         $this->assertTrue($this->sessionRepository->isLogged());

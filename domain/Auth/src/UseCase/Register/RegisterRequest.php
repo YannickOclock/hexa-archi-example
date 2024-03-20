@@ -2,7 +2,8 @@
 
 namespace Domain\Auth\UseCase\Register;
 
-class RegisterRequest {
+class RegisterRequest
+{
     public string $email = '';
     public string $password = '';
     public string $passwordConfirmation = '';

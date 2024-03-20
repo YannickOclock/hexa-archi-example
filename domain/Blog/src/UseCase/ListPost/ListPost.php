@@ -7,7 +7,6 @@ use Domain\Blog\Port\PostRepositoryInterface;
 
 readonly class ListPost
 {
-
     public function __construct(
         private PostRepositoryInterface    $postRepository,
         private SessionRepositoryInterface $sessionRepository
