@@ -11,9 +11,9 @@ class SessionUserRepository implements SessionRepositoryInterface
     {
         session_start();
     }
-    public function saveUser(SessionUser $sessionUser): void
+    public function saveUser(SessionUser $user): void
     {
-        $_SESSION['user'] = $sessionUser;
+        $_SESSION['user'] = $user;
     }
 
     public function getUser(): ?SessionUser

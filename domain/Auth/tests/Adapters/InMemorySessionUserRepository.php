@@ -9,9 +9,9 @@ class InMemorySessionUserRepository implements SessionRepositoryInterface
 {
     private ?SessionUser $sessionUser = null;
 
-    public function saveUser(SessionUser $sessionUser): void
+    public function saveUser(SessionUser $user): void
     {
-        $this->sessionUser = $sessionUser;
+        $this->sessionUser = $user;
     }
 
     public function getUser(): ?SessionUser

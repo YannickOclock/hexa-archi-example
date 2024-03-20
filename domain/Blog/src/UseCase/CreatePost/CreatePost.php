@@ -9,11 +9,11 @@ use Domain\Blog\Port\PostRepositoryInterface;
 
 use function Assert\lazy;
 
-class CreatePost
+readonly class CreatePost
 {
 
     public function __construct(
-        private PostRepositoryInterface $postRepository,
+        private PostRepositoryInterface    $postRepository,
         private SessionRepositoryInterface $sessionRepository
     ) {
     }
@@ -29,7 +29,7 @@ class CreatePost
         $presenter->present($response);
     }
 
-    private function createPost(CreatePostRequest $request, CreatePostResponse $response): bool
+    private function createPost(CreatePostRequest $request, CreatePostResponse $response): void
     {
         if(!$this->sessionRepository->isLogged()) {
             $response->addError('global', 'Vous devez être connecté pour créer un post');
@@ -53,7 +53,6 @@ class CreatePost
             $response->setPost($post);
         }
 
-        return $isValid;
     }
 
     protected function validateRequest(CreatePostRequest $request, CreatePostResponse $response): bool

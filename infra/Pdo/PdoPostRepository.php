@@ -2,6 +2,7 @@
 
 namespace App\Pdo;
 
+use DateTime;
 use Domain\Blog\Entity\Post;
 use Domain\Blog\Port\PostRepositoryInterface;
 use PDO;
@@ -23,13 +24,16 @@ class PdoPostRepository implements PostRepositoryInterface
                 'uuid' => $post->uuid,
                 'title' => $post->title,
                 'content' => $post->content,
-                'published_at' => $post->publishedAt ? $post->publishedAt->format('Y-m-d H:i:s') : null,
+                'published_at' => $post->publishedAt?->format('Y-m-d H:i:s'),
             ]);
         } catch (PDOException $e) {
             return false;
         }
     }
 
+    /**
+     * @throws \Exception
+     */
     public function find(string $uuid): ?Post
     {
         $stmt = $this->pdo->prepare('SELECT * FROM posts WHERE uuid = :uuid');
@@ -38,15 +42,18 @@ class PdoPostRepository implements PostRepositoryInterface
         if ($row === false) {
             return null;
         }
-        return new Post($row['title'], $row['content'], $row['published_at'] ? new \DateTime($row['published_at']) : null, $row['uuid']);
+        return new Post($row['title'], $row['content'], $row['published_at'] ? new DateTime($row['published_at']) : null, $row['uuid']);
     }
 
+    /**
+     * @throws \Exception
+     */
     public function findAll(): array
     {
         $stmt = $this->pdo->query('SELECT * FROM posts');
         $posts = [];
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            $posts[] = new Post($row['title'], $row['content'], $row['published_at'] ? new \DateTime($row['published_at']) : null, $row['uuid']);
+            $posts[] = new Post($row['title'], $row['content'], $row['published_at'] ? new DateTime($row['published_at']) : null, $row['uuid']);
         }
         return $posts;
     }

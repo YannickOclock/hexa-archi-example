@@ -2,40 +2,43 @@
 
 namespace App\Utils;
 
+use Exception;
+
 class Dispatcher
 {
     /**
      * @var string[]
      */
-    private $params = [];
+    private mixed $params = [];
 
     /**
      * @var string
      */
-    private $controller;
+    private string $controller;
 
     /**
      * @var string
      */
-    private $controllersNamespace;
+    private string $controllersNamespace;
 
     /**
      * @var mixed
      */
-    private $controllersArguments;
+    private mixed $controllersArguments;
 
     /**
      * @var string
      */
-    private $method;
+    private string $method;
 
     /**
      * Constructor method
      *
      * @param mixed $match Array returned by AltoRouter::match()
-     * @param string|array $fourOFourAction A valid target for the 404 action
+     * @param array|string $fourOFourAction A valid target for the 404 action
+     * @throws Exception
      */
-    public function __construct($match, $fourOFourAction)
+    public function __construct(mixed $match, array|string $fourOFourAction)
     {
         // if no route were matched, trigger the 404 action by parsing it so it is called by a later dispatch()
         if (!$match) {
@@ -54,10 +57,11 @@ class Dispatcher
     /**
      * Parses the target into valid controller and method properties
      *
-     * @param string|array $target
+     * @param array|string $target
      * @return void
+     * @throws Exception
      */
-    public function parseTarget($target)
+    public function parseTarget(array|string $target): void
     {
         // Getting controller's name and method's name
         // if it's an array
@@ -66,7 +70,7 @@ class Dispatcher
                 $this->controller = $target[0];
                 $this->method = $target[1];
             } else {
-                throw new \Exception('Target (array) of current route is incorrect');
+                throw new Exception('Target (array) of current route is incorrect');
             }
         } elseif (is_string($target)) {
             // if it's a string containing controller and method
@@ -75,7 +79,7 @@ class Dispatcher
             $separatorFound = false;
 
             foreach ($availableSeparators as $currentSeparator) {
-                if (strpos($target, $currentSeparator) !== false) {
+                if (str_contains($target, $currentSeparator)) {
                     $separatorFound = true;
                     $explodedInfos = explode($currentSeparator, $target);
                     $this->controller = $explodedInfos[0];
@@ -86,17 +90,18 @@ class Dispatcher
             }
 
             if (!$separatorFound) {
-                throw new \Exception('Target (string) of current route is incorrect');
+                throw new Exception('Target (string) of current route is incorrect');
             }
         } else {
-            throw new \Exception('Target of current route has incorrect type');
+            throw new Exception('Target of current route has incorrect type');
         }
     }
 
     /**
      * Dispatches matched route
      *
-     * @return void
+     * @return array
+     * @throws Exception
      */
     public function dispatch(): array
     {
@@ -106,7 +111,7 @@ class Dispatcher
             // If namespace is defined
             if (!empty($this->controllersNamespace)) {
                 // If controller does not contain namespace
-                if (strpos($this->controller, $this->controllersNamespace) === false) {
+                if (!str_contains($this->controller, $this->controllersNamespace)) {
                     // then, add its namespace
                     $controllerName = str_replace('\\\\', '\\', $this->controllersNamespace . '\\' . $this->controller);
                 }
@@ -126,8 +131,6 @@ class Dispatcher
                     //$controller = new $controllerName($this->controllersArguments);
                     $controllerArguments = [$this->controllersArguments];
                 }
-            } else {
-                //$controller = new $controllerName();
             }
             // method call with arguments unpacking
             //$controller->{$this->method}(...array_values($this->params));
@@ -139,7 +142,7 @@ class Dispatcher
                 2 => $controllerArguments,
             ];
         } else {
-            throw new \Exception('Cannot dispatch : controller or method is empty');
+            throw new Exception('Cannot dispatch : controller or method is empty');
         }
     }
 
@@ -148,7 +151,7 @@ class Dispatcher
      *
      * @param string $controllersNamespace
      */
-    public function setControllersNamespace(string $controllersNamespace)
+    public function setControllersNamespace(string $controllersNamespace): void
     {
         $this->controllersNamespace = $controllersNamespace;
     }
@@ -158,7 +161,7 @@ class Dispatcher
      *
      * @param mixed $controllersArguments
      */
-    public function setControllersArguments(...$controllersArguments)
+    public function setControllersArguments(...$controllersArguments): void
     {
         $this->controllersArguments = $controllersArguments;
     }

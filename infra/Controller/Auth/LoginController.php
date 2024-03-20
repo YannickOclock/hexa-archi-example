@@ -38,6 +38,9 @@ class LoginController
         return new Response($presenter->viewModel());
     }
 
+    /**
+     * @throws \Exception
+     */
     public function logout(LoginUser $useCase): Response
     {
         $useCase->logout();

@@ -4,8 +4,8 @@ namespace Domain\App\Error;
 
 class Error
 {
-    private $fieldName;
-    private $message;
+    private string $fieldName;
+    private string $message;
 
     public function __construct(string $fieldName, string $message)
     {

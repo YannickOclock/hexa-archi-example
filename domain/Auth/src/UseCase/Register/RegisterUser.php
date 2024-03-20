@@ -8,7 +8,7 @@ use Domain\Auth\Port\UserRepositoryInterface;
 
 use function Assert\lazy;
 
-class RegisterUser
+readonly class RegisterUser
 {
     public function __construct(
         private UserRepositoryInterface $userRepository,
@@ -26,7 +26,7 @@ class RegisterUser
         $presenter->present($response);
     }
 
-    private function registerUser(RegisterRequest $request, RegisterResponse $response): bool
+    private function registerUser(RegisterRequest $request, RegisterResponse $response): void
     {
         // TODO: Check if user is already logged in
 
@@ -45,7 +45,6 @@ class RegisterUser
             $response->setUser($user);
         }
 
-        return $isValid;
     }
 
     protected function validateRequest(RegisterRequest $request, RegisterResponse $response): bool

@@ -7,6 +7,7 @@ use Domain\Auth\Tests\RequestBuilder\RegisterRequestBuilder;
 use Domain\Auth\UseCase\Register\RegisterPresenter;
 use Domain\Auth\UseCase\Register\RegisterResponse;
 use Domain\Auth\UseCase\Register\RegisterUser;
+use PHPUnit\Framework\MockObject\Exception;
 use PHPUnit\Framework\TestCase;
 
 class AuthRegisterUserTest extends TestCase implements RegisterPresenter
@@ -18,6 +19,9 @@ class AuthRegisterUserTest extends TestCase implements RegisterPresenter
         $this->response = $response;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testRegisterUser()
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);
@@ -38,6 +42,9 @@ class AuthRegisterUserTest extends TestCase implements RegisterPresenter
         $this->assertEquals('john@doe.fr', $this->response->user()->getEmail());
     }
 
+    /**
+     * @throws Exception
+     */
     public function testRegisterUserWithInvalidData()
     {
         $userRepository = $this->createMock(UserRepositoryInterface::class);

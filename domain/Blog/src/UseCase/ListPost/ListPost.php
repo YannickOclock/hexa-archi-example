@@ -5,11 +5,11 @@ namespace Domain\Blog\UseCase\ListPost;
 use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Blog\Port\PostRepositoryInterface;
 
-class ListPost
+readonly class ListPost
 {
 
     public function __construct(
-        private PostRepositoryInterface $postRepository,
+        private PostRepositoryInterface    $postRepository,
         private SessionRepositoryInterface $sessionRepository
     ) {
     }

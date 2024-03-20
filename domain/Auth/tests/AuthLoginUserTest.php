@@ -72,7 +72,7 @@ class AuthLoginUserTest extends TestCase implements LoginPresenter
         $useCase->execute($authRequest, $this);
         $this->assertFalse($this->response->isAuthenticated());
         $this->assertNotEmpty($this->response->notification()->getErrors());
-        $this->assertEquals(1, count($this->response->notification()->getErrorsFor('password')));
+        $this->assertCount(1, $this->response->notification()->getErrorsFor('password'));
     }
 
     public function testShouldNotifyBadRequestIfEmailIsNotValid()

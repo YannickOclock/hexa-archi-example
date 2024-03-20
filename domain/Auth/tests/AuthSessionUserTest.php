@@ -41,7 +41,7 @@ class AuthSessionUserTest extends TestCase implements LoginPresenter {
         
         $useCase->execute($authRequest, $this);
         $this->assertEquals('john@doe.fr', $this->sessionRepository->getUser()->getEmail());
-        $this->assertEquals(true, $this->sessionRepository->isLogged());
-        $this->assertEquals(true, $this->sessionRepository->isAuthor());
+        $this->assertTrue($this->sessionRepository->isLogged());
+        $this->assertTrue($this->sessionRepository->isAuthor());
     }
 }

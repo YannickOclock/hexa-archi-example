@@ -10,10 +10,10 @@ use Domain\Auth\Port\SessionRepositoryInterface;
 
 use function Assert\lazy;
 
-class LoginUser
+readonly class LoginUser
 {
     public function __construct(
-        private UserRepositoryInterface $userRepository,
+        private UserRepositoryInterface    $userRepository,
         private SessionRepositoryInterface $sessionRepository
     ) {
     }

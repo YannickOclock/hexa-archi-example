@@ -2,11 +2,11 @@
 
 namespace Domain\Auth\Entity;
 
-class SessionUser
+readonly class SessionUser
 {
     public function __construct(
         private string $email,
-        private array $roles = []
+        private array  $roles = []
     ) {
     }
 

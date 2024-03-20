@@ -15,7 +15,7 @@ class PdoUserRepository implements UserRepositoryInterface
         $this->pdo = PdoRepository::getPDO();
     }
 
-    private function getDomainRolesFromDb($dbRoles)
+    private function getDomainRolesFromDb($dbRoles): array
     {
         $dbRoles = json_decode($dbRoles);
         $domainRoles = [];
@@ -30,7 +30,7 @@ class PdoUserRepository implements UserRepositoryInterface
         return $domainRoles;
     }
 
-    public function getDomainRolesForDb($domainRoles)
+    public function getDomainRolesForDb($domainRoles): array
     {
         $dbRoles = [];
         foreach($domainRoles as $domainRole) {

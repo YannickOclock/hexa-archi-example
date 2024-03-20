@@ -6,7 +6,11 @@ use AltoRouter;
 use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Auth\UseCase\Login\LoginPresenter;
 use Domain\Auth\UseCase\Login\LoginResponse;
+use Exception;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class TwigAuthLoginPresenter implements LoginPresenter
 {
@@ -20,6 +24,12 @@ class TwigAuthLoginPresenter implements LoginPresenter
     ) {
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function present(LoginResponse $response): void
     {
         $data = [

@@ -27,7 +27,7 @@ class ListPostResponse
         return $this->posts;
     }
 
-    public function addError(string $fieldName, string $error)
+    public function addError(string $fieldName, string $error): void
     {
         $this->notification->addError($fieldName, $error);
     }

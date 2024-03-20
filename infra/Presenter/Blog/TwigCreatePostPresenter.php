@@ -6,7 +6,11 @@ use AltoRouter;
 use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Blog\UseCase\CreatePost\CreatePostPresenter;
 use Domain\Blog\UseCase\CreatePost\CreatePostResponse;
+use Exception;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class TwigCreatePostPresenter implements CreatePostPresenter
 {
@@ -20,6 +24,12 @@ class TwigCreatePostPresenter implements CreatePostPresenter
     ) {
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     * @throws Exception
+     */
     public function present(CreatePostResponse $response): void
     {
         $data = [

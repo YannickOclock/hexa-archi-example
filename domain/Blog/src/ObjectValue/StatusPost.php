@@ -2,15 +2,19 @@
     namespace Domain\Blog\ObjectValue;
 
     use Assert\Assertion;
+    use Assert\AssertionFailedException;
 
     class StatusPost
     {
-        public const DRAFT = 'draft';
-        public const PUBLISHED = 'published';
-        public const ARCHIVED = 'archived';
+        public const string DRAFT = 'draft';
+        public const string PUBLISHED = 'published';
+        public const string ARCHIVED = 'archived';
 
+        /**
+         * @throws AssertionFailedException
+         */
         public function __construct(
-            private string $status
+            private readonly string $status
         ) {
             Assertion::inArray($status, [self::DRAFT, self::PUBLISHED, self::ARCHIVED]);
         }

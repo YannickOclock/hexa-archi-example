@@ -7,6 +7,9 @@ use Domain\Auth\Port\SessionRepositoryInterface;
 use Domain\Blog\UseCase\ListPost\ListPostPresenter;
 use Domain\Blog\UseCase\ListPost\ListPostResponse;
 use Twig\Environment;
+use Twig\Error\LoaderError;
+use Twig\Error\RuntimeError;
+use Twig\Error\SyntaxError;
 
 class TwigListPostPresenter implements ListPostPresenter
 {
@@ -19,6 +22,11 @@ class TwigListPostPresenter implements ListPostPresenter
     ) {
     }
 
+    /**
+     * @throws RuntimeError
+     * @throws SyntaxError
+     * @throws LoaderError
+     */
     public function present(ListPostResponse $response): void
     {
         $data = [

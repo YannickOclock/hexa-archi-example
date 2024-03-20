@@ -15,7 +15,7 @@ class RegisterResponse
         $this->notification = new Notification();
     }
 
-    public function setUser(User $user)
+    public function setUser(User $user): void
     {
         $this->user = $user;
     }
@@ -25,7 +25,7 @@ class RegisterResponse
         return $this->user;
     }
 
-    public function addError(string $fieldName, string $error)
+    public function addError(string $fieldName, string $error): void
     {
         $this->notification->addError($fieldName, $error);
     }

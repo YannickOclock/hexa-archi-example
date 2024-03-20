@@ -33,6 +33,7 @@
         "mnapoli/silly": "^1.9",
         "twig/twig": "^3.8",
         "altorouter/altorouter": "^2.0",
-        "symfony/dotenv": "^7.0"
+        "symfony/dotenv": "^7.0",
+        "ext-pdo": "*"
     }
 }

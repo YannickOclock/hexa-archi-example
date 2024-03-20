@@ -2,3 +2,4 @@ vendor
 .env
 tools
 var/report
+.idea
